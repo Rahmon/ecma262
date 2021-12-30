@@ -12694,7 +12694,7 @@
             1. If IsGenericDescriptor(_Desc_) is *true* or IsDataDescriptor(_Desc_) is *true*, then
               1. If _O_ is not *undefined*, create an own data property named _P_ of object _O_ whose [[Value]], [[Writable]], [[Enumerable]], and [[Configurable]] attribute values are described by _Desc_. If the value of an attribute field of _Desc_ is absent, the attribute of the newly created property is set to its <emu-xref href="#table-default-attribute-values">default value</emu-xref>.
             1. Else,
-              1. Assert: ! IsAccessorDescriptor(_Desc_) is *true*.
+              1. Assert: IsAccessorDescriptor(_Desc_) is *true*.
               1. If _O_ is not *undefined*, create an own accessor property named _P_ of object _O_ whose [[Get]], [[Set]], [[Enumerable]], and [[Configurable]] attribute values are described by _Desc_. If the value of an attribute field of _Desc_ is absent, the attribute of the newly created property is set to its <emu-xref href="#table-default-attribute-values">default value</emu-xref>.
             1. Return *true*.
           1. If every field in _Desc_ is absent, return *true*.
@@ -12715,7 +12715,7 @@
               1. If _Desc_.[[Value]] is present and SameValue(_Desc_.[[Value]], _current_.[[Value]]) is *false*, return *false*.
               1. Return *true*.
           1. Else,
-            1. Assert: ! IsAccessorDescriptor(_current_) and ! IsAccessorDescriptor(_Desc_) are both *true*.
+            1. Assert: IsAccessorDescriptor(_current_) and IsAccessorDescriptor(_Desc_) are both *true*.
             1. If _current_.[[Configurable]] is *false*, then
               1. If _Desc_.[[Set]] is present and SameValue(_Desc_.[[Set]], _current_.[[Set]]) is *false*, return *false*.
               1. If _Desc_.[[Get]] is present and SameValue(_Desc_.[[Get]], _current_.[[Get]]) is *false*, return *false*.
@@ -14519,7 +14519,7 @@
         <h1>
           [[GetOwnProperty]] (
             _P_: a property key,
-          )
+          ): a Property Descriptor or *undefined*
         </h1>
         <dl class="header">
           <dt>for</dt>
@@ -14529,7 +14529,7 @@
           1. If Type(_P_) is String, then
             1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
             1. If _numericIndex_ is not *undefined*, then
-              1. Let _value_ be ! IntegerIndexedElementGet(_O_, _numericIndex_).
+              1. Let _value_ be IntegerIndexedElementGet(_O_, _numericIndex_).
               1. If _value_ is *undefined*, return *undefined*.
               1. Return the PropertyDescriptor { [[Value]]: _value_, [[Writable]]: *true*, [[Enumerable]]: *true*, [[Configurable]]: *true* }.
           1. Return OrdinaryGetOwnProperty(_O_, _P_).
@@ -14540,7 +14540,7 @@
         <h1>
           [[HasProperty]] (
             _P_: a property key,
-          )
+            ): a Completion Record normally containing a Boolean
         </h1>
         <dl class="header">
           <dt>for</dt>
@@ -14549,7 +14549,7 @@
         <emu-alg>
           1. If Type(_P_) is String, then
             1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
-            1. If _numericIndex_ is not *undefined*, return ! IsValidIntegerIndex(_O_, _numericIndex_).
+            1. If _numericIndex_ is not *undefined*, return NormalCompletion(IsValidIntegerIndex(_O_, _numericIndex_)).
           1. Return ? OrdinaryHasProperty(_O_, _P_).
         </emu-alg>
       </emu-clause>
@@ -14559,7 +14559,7 @@
           [[DefineOwnProperty]] (
             _P_: a property key,
             _Desc_: a Property Descriptor,
-          )
+          ): a Boolean
         </h1>
         <dl class="header">
           <dt>for</dt>
@@ -14569,12 +14569,12 @@
           1. If Type(_P_) is String, then
             1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
             1. If _numericIndex_ is not *undefined*, then
-              1. If ! IsValidIntegerIndex(_O_, _numericIndex_) is *false*, return *false*.
+              1. If IsValidIntegerIndex(_O_, _numericIndex_) is *false*, return *false*.
               1. If _Desc_ has a [[Configurable]] field and if _Desc_.[[Configurable]] is *false*, return *false*.
               1. If _Desc_ has an [[Enumerable]] field and if _Desc_.[[Enumerable]] is *false*, return *false*.
               1. If ! IsAccessorDescriptor(_Desc_) is *true*, return *false*.
               1. If _Desc_ has a [[Writable]] field and if _Desc_.[[Writable]] is *false*, return *false*.
-              1. If _Desc_ has a [[Value]] field, perform ? IntegerIndexedElementSet(_O_, _numericIndex_, _Desc_.[[Value]]).
+              1. If _Desc_ has a [[Value]] field, perform ! IntegerIndexedElementSet(_O_, _numericIndex_, _Desc_.[[Value]]).
               1. Return *true*.
           1. Return ! OrdinaryDefineOwnProperty(_O_, _P_, _Desc_).
         </emu-alg>
@@ -14585,7 +14585,7 @@
           [[Get]] (
             _P_: a property key,
             _Receiver_: an ECMAScript language value,
-          )
+          ): a Completion Record normally containing an ECMAScript language value
         </h1>
         <dl class="header">
           <dt>for</dt>
@@ -14595,7 +14595,7 @@
           1. If Type(_P_) is String, then
             1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
             1. If _numericIndex_ is not *undefined*, then
-              1. Return ! IntegerIndexedElementGet(_O_, _numericIndex_).
+              1. Return NormalCompletion(IntegerIndexedElementGet(_O_, _numericIndex_)).
           1. Return ? OrdinaryGet(_O_, _P_, _Receiver_).
         </emu-alg>
       </emu-clause>
@@ -14606,7 +14606,7 @@
             _P_: a property key,
             _V_: an ECMAScript language value,
             _Receiver_: an ECMAScript language value,
-          )
+          ): a Completion Record normally containing a Boolean
         </h1>
         <dl class="header">
           <dt>for</dt>
@@ -14616,8 +14616,8 @@
           1. If Type(_P_) is String, then
             1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
             1. If _numericIndex_ is not *undefined*, then
-              1. Perform ? IntegerIndexedElementSet(_O_, _numericIndex_, _V_).
-              1. Return *true*.
+              1. Perform ! IntegerIndexedElementSet(_O_, _numericIndex_, _V_).
+              1. Return NormalCompletion(*true*).
           1. Return ? OrdinarySet(_O_, _P_, _V_, _Receiver_).
         </emu-alg>
       </emu-clause>
@@ -14626,7 +14626,7 @@
         <h1>
           [[Delete]] (
             _P_: a property key,
-          )
+          ): a Completion Record normally containing a Boolean
         </h1>
         <dl class="header">
           <dt>for</dt>
@@ -14636,13 +14636,13 @@
           1. If Type(_P_) is String, then
             1. Let _numericIndex_ be ! CanonicalNumericIndexString(_P_).
             1. If _numericIndex_ is not *undefined*, then
-              1. If ! IsValidIntegerIndex(_O_, _numericIndex_) is *false*, return *true*; else return *false*.
+              1. If IsValidIntegerIndex(_O_, _numericIndex_) is *false*, return NormalCompletion(*true*); else return NormalCompletion(*false*).
           1. Return ? OrdinaryDelete(_O_, _P_).
         </emu-alg>
       </emu-clause>
 
       <emu-clause id="sec-integer-indexed-exotic-objects-ownpropertykeys" type="internal method">
-        <h1>[[OwnPropertyKeys]] ( )</h1>
+        <h1>[[OwnPropertyKeys]] ( ): a List of property keys</h1>
         <dl class="header">
           <dt>for</dt>
           <dd>an Integer-Indexed exotic object _O_</dd>
@@ -14664,7 +14664,7 @@
         <h1>
           IntegerIndexedObjectCreate (
             _prototype_: unknown,
-          )
+          ): an Integer-Indexed exotic object
         </h1>
         <dl class="header">
           <dt>description</dt>
@@ -14690,13 +14690,13 @@
           IsValidIntegerIndex (
             _O_: an Integer-Indexed exotic object,
             _index_: a Number,
-          )
+          ): a Boolean
         </h1>
         <dl class="header">
         </dl>
         <emu-alg>
           1. If IsDetachedBuffer(_O_.[[ViewedArrayBuffer]]) is *true*, return *false*.
-          1. If ! IsIntegralNumber(_index_) is *false*, return *false*.
+          1. If IsIntegralNumber(_index_) is *false*, return *false*.
           1. If _index_ is *-0*<sub>𝔽</sub>, return *false*.
           1. If ℝ(_index_) &lt; 0 or ℝ(_index_) &ge; _O_.[[ArrayLength]], return *false*.
           1. Return *true*.
@@ -14708,12 +14708,12 @@
           IntegerIndexedElementGet (
             _O_: an Integer-Indexed exotic object,
             _index_: a Number,
-          )
+          ): a Number or a BigInt or *undefined*
         </h1>
         <dl class="header">
         </dl>
         <emu-alg>
-          1. If ! IsValidIntegerIndex(_O_, _index_) is *false*, return *undefined*.
+          1. If IsValidIntegerIndex(_O_, _index_) is *false*, return *undefined*.
           1. Let _offset_ be _O_.[[ByteOffset]].
           1. Let _arrayTypeName_ be the String value of _O_.[[TypedArrayName]].
           1. Let _elementSize_ be the Element Size value specified in <emu-xref href="#table-the-typedarray-constructors"></emu-xref> for _arrayTypeName_.
@@ -14729,21 +14729,21 @@
             _O_: an Integer-Indexed exotic object,
             _index_: a Number,
             _value_: an ECMAScript language value,
-          )
+          ): a Completion Record normally containing ~unused~
         </h1>
         <dl class="header">
         </dl>
         <emu-alg>
           1. If _O_.[[ContentType]] is ~BigInt~, let _numValue_ be ? ToBigInt(_value_).
           1. Otherwise, let _numValue_ be ? ToNumber(_value_).
-          1. If ! IsValidIntegerIndex(_O_, _index_) is *true*, then
+          1. If IsValidIntegerIndex(_O_, _index_) is *true*, then
             1. Let _offset_ be _O_.[[ByteOffset]].
             1. Let _arrayTypeName_ be the String value of _O_.[[TypedArrayName]].
             1. Let _elementSize_ be the Element Size value specified in <emu-xref href="#table-the-typedarray-constructors"></emu-xref> for _arrayTypeName_.
             1. Let _indexedPosition_ be (ℝ(_index_) &times; _elementSize_) + _offset_.
             1. Let _elementType_ be the Element Type value in <emu-xref href="#table-the-typedarray-constructors"></emu-xref> for _arrayTypeName_.
             1. Perform SetValueInBuffer(_O_.[[ViewedArrayBuffer]], _indexedPosition_, _elementType_, _numValue_, *true*, ~Unordered~).
-          1. Return NormalCompletion(*undefined*).
+          1. Return NormalCompletion(~unused~).
         </emu-alg>
         <emu-note>
           <p>This operation always appears to succeed, but it has no effect when attempting to write past the end of a TypedArray or to a TypedArray which is backed by a detached ArrayBuffer.</p>
@@ -30931,7 +30931,7 @@
         <h1>Number.isInteger ( _number_ )</h1>
         <p>When `Number.isInteger` is called with one argument _number_, the following steps are taken:</p>
         <emu-alg>
-          1. Return ! IsIntegralNumber(_number_).
+          1. Return NormalCompletion(IsIntegralNumber(_number_)).
         </emu-alg>
       </emu-clause>
 
@@ -30952,7 +30952,7 @@
         <h1>Number.isSafeInteger ( _number_ )</h1>
         <p>When `Number.isSafeInteger` is called with one argument _number_, the following steps are taken:</p>
         <emu-alg>
-          1. If ! IsIntegralNumber(_number_) is *true*, then
+          1. If IsIntegralNumber(_number_) is *true*, then
             1. If abs(ℝ(_number_)) &le; 2<sup>53</sup> - 1, return *true*.
           1. Return *false*.
         </emu-alg>
@@ -33417,7 +33417,7 @@ THH:mm:ss.sss
           1. Let _result_ be the empty String.
           1. For each element _next_ of _codePoints_, do
             1. Let _nextCP_ be ? ToNumber(_next_).
-            1. If ! IsIntegralNumber(_nextCP_) is *false*, throw a *RangeError* exception.
+            1. If IsIntegralNumber(_nextCP_) is *false*, throw a *RangeError* exception.
             1. If ℝ(_nextCP_) &lt; 0 or ℝ(_nextCP_) &gt; 0x10FFFF, throw a *RangeError* exception.
             1. Set _result_ to the string-concatenation of _result_ and ! UTF16EncodeCodePoint(ℝ(_nextCP_)).
           1. Assert: If _codePoints_ is empty, then _result_ is the empty String.
@@ -40552,7 +40552,7 @@ THH:mm:ss.sss
             _type_: a TypedArray element type,
             _rawBytes_: a List,
             _isLittleEndian_: a Boolean,
-          )
+          ): a Number or a BigInt
         </h1>
         <dl class="header">
         </dl>
@@ -40585,7 +40585,7 @@ THH:mm:ss.sss
             _isTypedArray_: a Boolean,
             _order_: ~SeqCst~ or ~Unordered~,
             optional _isLittleEndian_: a Boolean,
-          )
+          ): a Number or a BigInt
         </h1>
         <dl class="header">
         </dl>
@@ -40647,7 +40647,7 @@ THH:mm:ss.sss
             _isTypedArray_: a Boolean,
             _order_: ~SeqCst~, ~Unordered~, or ~Init~,
             optional _isLittleEndian_: a Boolean,
-          )
+          ): ~unused~
         </h1>
         <dl class="header">
         </dl>
@@ -40665,7 +40665,7 @@ THH:mm:ss.sss
             1. If _isTypedArray_ is *true* and IsNoTearConfiguration(_type_, _order_) is *true*, let _noTear_ be *true*; otherwise let _noTear_ be *false*.
             1. Append WriteSharedMemory { [[Order]]: _order_, [[NoTear]]: _noTear_, [[Block]]: _block_, [[ByteIndex]]: _byteIndex_, [[ElementSize]]: _elementSize_, [[Payload]]: _rawBytes_ } to _eventList_.
           1. Else, store the individual bytes of _rawBytes_ into _block_, starting at _block_[_byteIndex_].
-          1. Return NormalCompletion(*undefined*).
+          1. Return ~unused~.
         </emu-alg>
       </emu-clause>
 
@@ -41028,7 +41028,7 @@ THH:mm:ss.sss
             _requestIndex_: unknown,
             _isLittleEndian_: unknown,
             _type_: unknown,
-          )
+          ): a Completion Record normally containing a Number or a BigInt
         </h1>
         <dl class="header">
           <dt>description</dt>
@@ -41046,7 +41046,7 @@ THH:mm:ss.sss
           1. Let _elementSize_ be the Element Size value specified in <emu-xref href="#table-the-typedarray-constructors"></emu-xref> for Element Type _type_.
           1. If _getIndex_ + _elementSize_ &gt; _viewSize_, throw a *RangeError* exception.
           1. Let _bufferIndex_ be _getIndex_ + _viewOffset_.
-          1. Return GetValueFromBuffer(_buffer_, _bufferIndex_, _type_, *false*, ~Unordered~, _isLittleEndian_).
+          1. Return NormalCompletion(GetValueFromBuffer(_buffer_, _bufferIndex_, _type_, *false*, ~Unordered~, _isLittleEndian_)).
         </emu-alg>
       </emu-clause>
 
@@ -41878,7 +41878,7 @@ THH:mm:ss.sss
         1. Let _WL_ be GetWaiterList(_block_, _indexedPosition_).
         1. Perform EnterCriticalSection(_WL_).
         1. Let _elementType_ be the Element Type value in <emu-xref href="#table-the-typedarray-constructors"></emu-xref> for _arrayTypeName_.
-        1. Let _w_ be ! GetValueFromBuffer(_buffer_, _indexedPosition_, _elementType_, *true*, ~SeqCst~).
+        1. Let _w_ be GetValueFromBuffer(_buffer_, _indexedPosition_, _elementType_, *true*, ~SeqCst~).
         1. If _v_ &ne; _w_, then
           1. Perform LeaveCriticalSection(_WL_).
           1. Return the String *"not-equal"*.
