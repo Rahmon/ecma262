@@ -9524,7 +9524,7 @@
       </emu-alg>
       <emu-grammar>ObjectBindingPattern : `{` `}`</emu-grammar>
       <emu-alg>
-        1. Return NormalCompletion(~empty~).
+        1. Return NormalCompletion(~unused~).
       </emu-alg>
       <emu-grammar>
         ObjectBindingPattern :
@@ -9532,8 +9532,8 @@
           `{` BindingPropertyList `,` `}`
       </emu-grammar>
       <emu-alg>
-        1. Perform ? PropertyBindingInitialization of |BindingPropertyList| using _value_ and _environment_ as the arguments.
-        1. Return NormalCompletion(~empty~).
+        1. Perform ? PropertyBindingInitialization of |BindingPropertyList| with arguments _value_ and _environment_.
+        1. Return NormalCompletion(~unused~).
       </emu-alg>
       <emu-grammar>ObjectBindingPattern : `{` BindingRestProperty `}`</emu-grammar>
       <emu-alg>
@@ -9581,7 +9581,7 @@
       </emu-note>
       <emu-grammar>ArrayBindingPattern : `[` `]`</emu-grammar>
       <emu-alg>
-        1. Return NormalCompletion(~empty~).
+        1. Return NormalCompletion(~unused~).
       </emu-alg>
       <emu-grammar>ArrayBindingPattern : `[` Elision `]`</emu-grammar>
       <emu-alg>
@@ -9695,7 +9695,7 @@
       </emu-alg>
       <emu-grammar>FormalParameters : [empty]</emu-grammar>
       <emu-alg>
-        1. Return NormalCompletion(~empty~).
+        1. Return NormalCompletion(~unused~).
       </emu-alg>
       <emu-grammar>FormalParameters : FormalParameterList `,` FunctionRestParameter</emu-grammar>
       <emu-alg>
@@ -21321,7 +21321,7 @@
           Runtime Semantics: PropertyBindingInitialization (
             _value_: unknown,
             _environment_: unknown,
-          )
+          ): a Completion Record normally containing a List of property keys
         </h1>
         <dl class="header">
           <dt>description</dt>
@@ -21331,14 +21331,14 @@
         <emu-alg>
           1. Let _boundNames_ be ? PropertyBindingInitialization of |BindingPropertyList| with arguments _value_ and _environment_.
           1. Let _nextNames_ be ? PropertyBindingInitialization of |BindingProperty| with arguments _value_ and _environment_.
-          1. Return the list-concatenation of _boundNames_ and _nextNames_.
+          1. Return NormalCompletion(the list-concatenation of _boundNames_ and _nextNames_).
         </emu-alg>
 
         <emu-grammar>BindingProperty : SingleNameBinding</emu-grammar>
         <emu-alg>
           1. Let _name_ be the string that is the only element of BoundNames of |SingleNameBinding|.
           1. Perform ? KeyedBindingInitialization of |SingleNameBinding| using _value_, _environment_, and _name_ as the arguments.
-          1. Return a List whose sole element is _name_.
+          1. Return NormalCompletion(&laquo; _name_ &raquo;).
         </emu-alg>
 
         <emu-grammar>BindingProperty : PropertyName `:` BindingElement</emu-grammar>
@@ -21346,7 +21346,7 @@
           1. Let _P_ be the result of evaluating |PropertyName|.
           1. ReturnIfAbrupt(_P_).
           1. Perform ? KeyedBindingInitialization of |BindingElement| with _value_, _environment_, and _P_ as the arguments.
-          1. Return a List whose sole element is _P_.
+          1. Return NormalCompletion(&laquo; _P_ &raquo;).
         </emu-alg>
       </emu-clause>
 
@@ -21356,7 +21356,7 @@
             _value_: unknown,
             _environment_: unknown,
             _excludedNames_: unknown,
-          )
+          ): a Completion Record normally containing ~unused~
         </h1>
         <dl class="header">
         </dl>
@@ -21376,7 +21376,7 @@
             _value_: unknown,
             _environment_: unknown,
             _propertyName_: unknown,
-          )
+          ): a Completion Record normally containing ~unused~
         </h1>
         <dl class="header">
         </dl>
@@ -21389,7 +21389,7 @@
           1. If |Initializer| is present and _v_ is *undefined*, then
             1. Let _defaultValue_ be the result of evaluating |Initializer|.
             1. Set _v_ to ? GetValue(_defaultValue_).
-          1. Return the result of performing BindingInitialization of |BindingPattern| passing _v_ and _environment_ as arguments.
+          1. Return Completion(BindingInitialization of |BindingPattern| with arguments _v_ and _environment_).
         </emu-alg>
         <emu-grammar>SingleNameBinding : BindingIdentifier Initializer?</emu-grammar>
         <emu-alg>
@@ -21402,8 +21402,8 @@
             1. Else,
               1. Let _defaultValue_ be the result of evaluating |Initializer|.
               1. Set _v_ to ? GetValue(_defaultValue_).
-          1. If _environment_ is *undefined*, return ? PutValue(_lhs_, _v_).
-          1. Return InitializeReferencedBinding(_lhs_, _v_).
+          1. If _environment_ is *undefined*, return Completion(PutValue(_lhs_, _v_)).
+          1. Return Completion(InitializeReferencedBinding(_lhs_, _v_)).
         </emu-alg>
       </emu-clause>
     </emu-clause>
@@ -21523,7 +21523,7 @@
           LoopContinues (
             _completion_: unknown,
             _labelSet_: unknown,
-          )
+          ): a Boolean
         </h1>
         <dl class="header">
         </dl>
@@ -21543,25 +21543,25 @@
         <h1>
           Runtime Semantics: LoopEvaluation (
             _labelSet_: unknown,
-          )
+          ): a Completion Record normally containing an ECMAScript language value
         </h1>
         <dl class="header">
         </dl>
         <emu-grammar>IterationStatement : DoWhileStatement</emu-grammar>
         <emu-alg>
-          1. Return ? DoWhileLoopEvaluation of |DoWhileStatement| with argument _labelSet_.
+          1. Return Completion(DoWhileLoopEvaluation of |DoWhileStatement| with argument _labelSet_).
         </emu-alg>
         <emu-grammar>IterationStatement : WhileStatement</emu-grammar>
         <emu-alg>
-          1. Return ? WhileLoopEvaluation of |WhileStatement| with argument _labelSet_.
+          1. Return Completion(WhileLoopEvaluation of |WhileStatement| with argument _labelSet_).
         </emu-alg>
         <emu-grammar>IterationStatement : ForStatement</emu-grammar>
         <emu-alg>
-          1. Return ? ForLoopEvaluation of |ForStatement| with argument _labelSet_.
+          1. Return Completion(ForLoopEvaluation of |ForStatement| with argument _labelSet_).
         </emu-alg>
         <emu-grammar>IterationStatement : ForInOfStatement</emu-grammar>
         <emu-alg>
-          1. Return ? ForInOfLoopEvaluation of |ForInOfStatement| with argument _labelSet_.
+          1. Return Completion(ForInOfLoopEvaluation of |ForInOfStatement| with argument _labelSet_).
         </emu-alg>
       </emu-clause>
     </emu-clause>
@@ -21591,7 +21591,7 @@
         <h1>
           Runtime Semantics: DoWhileLoopEvaluation (
             _labelSet_: unknown,
-          )
+          ): a Completion Record normally containing an ECMAScript language value
         </h1>
         <dl class="header">
         </dl>
