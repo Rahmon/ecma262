@@ -9177,43 +9177,43 @@
       <h1>
         Runtime Semantics: NamedEvaluation (
           _name_: unknown,
-        ): a Completion Record normally containing an ECMAScript language value
+        ): a Completion Record normally containing a function object
       </h1>
       <dl class="header">
       </dl>
       <emu-grammar>PrimaryExpression : CoverParenthesizedExpressionAndArrowParameterList</emu-grammar>
       <emu-alg>
         1. Let _expr_ be the |ParenthesizedExpression| that is covered by |CoverParenthesizedExpressionAndArrowParameterList|.
-        1. Return the result of performing NamedEvaluation of _expr_ with argument _name_.
+        1. Return Completion(NamedEvaluation of _expr_ with argument _name_).
       </emu-alg>
       <emu-grammar>ParenthesizedExpression : `(` Expression `)`</emu-grammar>
       <emu-alg>
         1. Assert: IsAnonymousFunctionDefinition(|Expression|) is *true*.
-        1. Return the result of performing NamedEvaluation of |Expression| with argument _name_.
+        1. Return Completion(NamedEvaluation of |Expression| with argument _name_).
       </emu-alg>
       <emu-grammar>FunctionExpression : `function` `(` FormalParameters `)` `{` FunctionBody `}`</emu-grammar>
       <emu-alg>
-        1. Return InstantiateOrdinaryFunctionExpression of |FunctionExpression| with argument _name_.
+        1. Return NormalCompletion(InstantiateOrdinaryFunctionExpression of |FunctionExpression| with argument _name_).
       </emu-alg>
       <emu-grammar>GeneratorExpression : `function` `*` `(` FormalParameters `)` `{` GeneratorBody `}`</emu-grammar>
       <emu-alg>
-        1. Return InstantiateGeneratorFunctionExpression of |GeneratorExpression| with argument _name_.
+        1. Return NormalCompletion(InstantiateGeneratorFunctionExpression of |GeneratorExpression| with argument _name_).
       </emu-alg>
       <emu-grammar>
         AsyncGeneratorExpression : `async` `function` `*` `(` FormalParameters `)` `{` AsyncGeneratorBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return InstantiateAsyncGeneratorFunctionExpression of |AsyncGeneratorExpression| with argument _name_.
+        1. Return NormalCompletion(InstantiateAsyncGeneratorFunctionExpression of |AsyncGeneratorExpression| with argument _name_).
       </emu-alg>
       <emu-grammar>
         AsyncFunctionExpression : `async` `function` `(` FormalParameters `)` `{` AsyncFunctionBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return InstantiateAsyncFunctionExpression of |AsyncFunctionExpression| with argument _name_.
+        1. Return NormalCompletion(InstantiateAsyncFunctionExpression of |AsyncFunctionExpression| with argument _name_).
       </emu-alg>
       <emu-grammar>ArrowFunction : ArrowParameters `=>` ConciseBody</emu-grammar>
       <emu-alg>
-        1. Return InstantiateArrowFunctionExpression of |ArrowFunction| with argument _name_.
+        1. Return NormalCompletion(InstantiateArrowFunctionExpression of |ArrowFunction| with argument _name_).
       </emu-alg>
       <emu-grammar>
         AsyncArrowFunction :
@@ -9221,14 +9221,13 @@
           CoverCallExpressionAndAsyncArrowHead `=>` AsyncConciseBody
       </emu-grammar>
       <emu-alg>
-        1. Return InstantiateAsyncArrowFunctionExpression of |AsyncArrowFunction| with argument _name_.
+        1. Return NormalCompletion(InstantiateAsyncArrowFunctionExpression of |AsyncArrowFunction| with argument _name_).
       </emu-alg>
       <emu-grammar>ClassExpression : `class` ClassTail</emu-grammar>
       <emu-alg>
-        1. Let _value_ be the result of ClassDefinitionEvaluation of |ClassTail| with arguments *undefined* and _name_.
-        1. ReturnIfAbrupt(_value_).
+        1. Let _value_ be ? ClassDefinitionEvaluation of |ClassTail| with arguments *undefined* and _name_.
         1. Set _value_.[[SourceText]] to the source text matched by |ClassExpression|.
-        1. Return _value_.
+        1. Return NormalCompletion(_value_).
       </emu-alg>
     </emu-clause>
   </emu-clause>
@@ -9447,7 +9446,7 @@
         Runtime Semantics: InstantiateFunctionObject (
           _scope_: unknown,
           _privateScope_: unknown,
-        ): a Completion Record normally containing a function object
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -9457,7 +9456,7 @@
           `function` `(` FormalParameters `)` `{` FunctionBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return ? InstantiateOrdinaryFunctionObject of |FunctionDeclaration| with arguments _scope_ and _privateScope_.
+        1. Return InstantiateOrdinaryFunctionObject of |FunctionDeclaration| with arguments _scope_ and _privateScope_.
       </emu-alg>
       <emu-grammar>
         GeneratorDeclaration :
@@ -9465,7 +9464,7 @@
           `function` `*` `(` FormalParameters `)` `{` GeneratorBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return ? InstantiateGeneratorFunctionObject of |GeneratorDeclaration| with arguments _scope_ and _privateScope_.
+        1. Return InstantiateGeneratorFunctionObject of |GeneratorDeclaration| with arguments _scope_ and _privateScope_.
       </emu-alg>
       <emu-grammar>
         AsyncGeneratorDeclaration :
@@ -9473,7 +9472,7 @@
           `async` `function` `*` `(` FormalParameters `)` `{` AsyncGeneratorBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return ? InstantiateAsyncGeneratorFunctionObject of |AsyncGeneratorDeclaration| with arguments _scope_ and _privateScope_.
+        1. Return InstantiateAsyncGeneratorFunctionObject of |AsyncGeneratorDeclaration| with arguments _scope_ and _privateScope_.
       </emu-alg>
       <emu-grammar>
         AsyncFunctionDeclaration :
@@ -9481,7 +9480,7 @@
           `async` `function` `(` FormalParameters `)` `{` AsyncFunctionBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return ? InstantiateAsyncFunctionObject of |AsyncFunctionDeclaration| with arguments _scope_ and _privateScope_.
+        1. Return InstantiateAsyncFunctionObject of |AsyncFunctionDeclaration| with arguments _scope_ and _privateScope_.
       </emu-alg>
     </emu-clause>
 
@@ -9631,7 +9630,7 @@
             1. ReturnIfAbrupt(_v_).
         1. If |Initializer| is present and _v_ is *undefined*, then
           1. If IsAnonymousFunctionDefinition(|Initializer|) is *true*, then
-            1. Set _v_ to the result of performing NamedEvaluation of |Initializer| with argument _bindingId_.
+            1. Set _v_ to ? NamedEvaluation of |Initializer| with argument _bindingId_.
           1. Else,
             1. Let _defaultValue_ be the result of evaluating |Initializer|.
             1. Set _v_ to ? GetValue(_defaultValue_).
@@ -13352,7 +13351,7 @@
           1. Assert: _argumentsList_ is empty.
           1. Assert: _functionObject_.[[ClassFieldInitializerName]] is not ~empty~.
           1. If IsAnonymousFunctionDefinition(|AssignmentExpression|) is *true*, then
-            1. Let _value_ be NamedEvaluation of |Initializer| with argument _functionObject_.[[ClassFieldInitializerName]].
+            1. Let _value_ be ? NamedEvaluation of |Initializer| with argument _functionObject_.[[ClassFieldInitializerName]].
           1. Else,
             1. Let _rhs_ be the result of evaluating |AssignmentExpression|.
             1. Let _value_ be ? GetValue(_rhs_).
@@ -20386,7 +20385,7 @@
           1. Let _lref_ be the result of evaluating |LeftHandSideExpression|.
           1. ReturnIfAbrupt(_lref_).
           1. If IsAnonymousFunctionDefinition(|AssignmentExpression|) and IsIdentifierRef of |LeftHandSideExpression| are both *true*, then
-            1. Let _rval_ be NamedEvaluation of |AssignmentExpression| with argument _lref_.[[ReferencedName]].
+            1. Let _rval_ be ? NamedEvaluation of |AssignmentExpression| with argument _lref_.[[ReferencedName]].
           1. Else,
             1. Let _rref_ be the result of evaluating |AssignmentExpression|.
             1. Let _rval_ be ? GetValue(_rref_).
@@ -20435,7 +20434,7 @@
         1. Let _lbool_ be ! ToBoolean(_lval_).
         1. If _lbool_ is *false*, return _lval_.
         1. If IsAnonymousFunctionDefinition(|AssignmentExpression|) is *true* and IsIdentifierRef of |LeftHandSideExpression| is *true*, then
-          1. Let _rval_ be NamedEvaluation of |AssignmentExpression| with argument _lref_.[[ReferencedName]].
+          1. Let _rval_ be ? NamedEvaluation of |AssignmentExpression| with argument _lref_.[[ReferencedName]].
         1. Else,
           1. Let _rref_ be the result of evaluating |AssignmentExpression|.
           1. Let _rval_ be ? GetValue(_rref_).
@@ -20449,7 +20448,7 @@
         1. Let _lbool_ be ! ToBoolean(_lval_).
         1. If _lbool_ is *true*, return _lval_.
         1. If IsAnonymousFunctionDefinition(|AssignmentExpression|) is *true* and IsIdentifierRef of |LeftHandSideExpression| is *true*, then
-          1. Let _rval_ be NamedEvaluation of |AssignmentExpression| with argument _lref_.[[ReferencedName]].
+          1. Let _rval_ be ? NamedEvaluation of |AssignmentExpression| with argument _lref_.[[ReferencedName]].
         1. Else,
           1. Let _rref_ be the result of evaluating |AssignmentExpression|.
           1. Let _rval_ be ? GetValue(_rref_).
@@ -20462,7 +20461,7 @@
         1. [id="step-assignmentexpression-evaluation-lgcl-nullish-getvalue"] Let _lval_ be ? GetValue(_lref_).
         1. If _lval_ is neither *undefined* nor *null*, return _lval_.
         1. If IsAnonymousFunctionDefinition(|AssignmentExpression|) is *true* and IsIdentifierRef of |LeftHandSideExpression| is *true*, then
-          1. Let _rval_ be NamedEvaluation of |AssignmentExpression| with argument _lref_.[[ReferencedName]].
+          1. Let _rval_ be ? NamedEvaluation of |AssignmentExpression| with argument _lref_.[[ReferencedName]].
         1. Else,
           1. Let _rref_ be the result of evaluating |AssignmentExpression|.
           1. Let _rval_ be ? GetValue(_rref_).
@@ -20753,7 +20752,7 @@
           1. Let _v_ be ? GetV(_value_, _P_).
           1. If |Initializer?| is present and _v_ is *undefined*, then
             1. If IsAnonymousFunctionDefinition(|Initializer|) is *true*, then
-              1. Set _v_ to the result of performing NamedEvaluation of |Initializer| with argument _P_.
+              1. Set _v_ to ? NamedEvaluation of |Initializer| with argument _P_.
             1. Else,
               1. Let _defaultValue_ be the result of evaluating |Initializer|.
               1. Set _v_ to ? GetValue(_defaultValue_).
@@ -21191,7 +21190,7 @@
           1. Let _bindingId_ be StringValue of |BindingIdentifier|.
           1. Let _lhs_ be ResolveBinding(_bindingId_).
           1. If IsAnonymousFunctionDefinition(|Initializer|) is *true*, then
-            1. Let _value_ be NamedEvaluation of |Initializer| with argument _bindingId_.
+            1. Let _value_ be ? NamedEvaluation of |Initializer| with argument _bindingId_.
           1. Else,
             1. Let _rhs_ be the result of evaluating |Initializer|.
             1. Let _value_ be ? GetValue(_rhs_).
@@ -21249,7 +21248,7 @@
           1. Let _bindingId_ be StringValue of |BindingIdentifier|.
           1. Let _lhs_ be ? ResolveBinding(_bindingId_).
           1. If IsAnonymousFunctionDefinition(|Initializer|) is *true*, then
-            1. Let _value_ be NamedEvaluation of |Initializer| with argument _bindingId_.
+            1. Let _value_ be ? NamedEvaluation of |Initializer| with argument _bindingId_.
           1. Else,
             1. Let _rhs_ be the result of evaluating |Initializer|.
             1. Let _value_ be ? GetValue(_rhs_).
@@ -21398,7 +21397,7 @@
           1. Let _v_ be ? GetV(_value_, _propertyName_).
           1. If |Initializer| is present and _v_ is *undefined*, then
             1. If IsAnonymousFunctionDefinition(|Initializer|) is *true*, then
-              1. Set _v_ to the result of performing NamedEvaluation of |Initializer| with argument _bindingId_.
+              1. Set _v_ to ? NamedEvaluation of |Initializer| with argument _bindingId_.
             1. Else,
               1. Let _defaultValue_ be the result of evaluating |Initializer|.
               1. Set _v_ to ? GetValue(_defaultValue_).
@@ -21634,7 +21633,7 @@
         <h1>
           Runtime Semantics: WhileLoopEvaluation (
             _labelSet_: unknown,
-          )
+          ): a Completion Record normally containing an ECMAScript language value
         </h1>
         <dl class="header">
         </dl>
@@ -21690,7 +21689,7 @@
         <h1>
           Runtime Semantics: ForLoopEvaluation (
             _labelSet_: unknown,
-          )
+          ): a Completion Record normally containing an ECMAScript language value
         </h1>
         <dl class="header">
         </dl>
@@ -21738,7 +21737,7 @@
             _stmt_: unknown,
             _perIterationBindings_: unknown,
             _labelSet_: unknown,
-          )
+          ): a Completion Record normally containing an ECMAScript language value
         </h1>
         <dl class="header">
         </dl>
@@ -21764,7 +21763,7 @@
         <h1>
           CreatePerIterationEnvironment (
             _perIterationBindings_: unknown,
-          )
+          ): a Completion Record normally containing ~unused~
         </h1>
         <dl class="header">
         </dl>
@@ -21779,7 +21778,7 @@
               1. Let _lastValue_ be ? _lastIterationEnv_.GetBindingValue(_bn_, *true*).
               1. Perform _thisIterationEnv_.InitializeBinding(_bn_, _lastValue_).
             1. Set the running execution context's LexicalEnvironment to _thisIterationEnv_.
-          1. Return *undefined*.
+          1. Return NormalCompletion(~unused~).
         </emu-alg>
       </emu-clause>
     </emu-clause>
@@ -21873,7 +21872,7 @@
       </emu-clause>
 
       <emu-clause id="sec-static-semantics-isdestructuring" oldids="sec-static-semantics-static-semantics-isdestructuring,sec-for-in-and-for-of-statements-static-semantics-isdestructuring" type="sdo">
-        <h1>Static Semantics: IsDestructuring</h1>
+        <h1>Static Semantics: IsDestructuring (): a Boolean</h1>
         <dl class="header">
         </dl>
         <emu-grammar>MemberExpression : PrimaryExpression</emu-grammar>
@@ -21923,7 +21922,7 @@
           Runtime Semantics: ForDeclarationBindingInitialization (
             _value_: unknown,
             _environment_: unknown,
-          )
+          ): a Completion Record normally containing ~unused~
         </h1>
         <dl class="header">
         </dl>
@@ -21932,7 +21931,7 @@
         </emu-note>
         <emu-grammar>ForDeclaration : LetOrConst ForBinding</emu-grammar>
         <emu-alg>
-          1. Return the result of performing BindingInitialization of |ForBinding| passing _value_ and _environment_ as the arguments.
+          1. Return Completion(BindingInitialization of |ForBinding| with arguments _value_ and _environment_).
         </emu-alg>
       </emu-clause>
 
@@ -21940,7 +21939,7 @@
         <h1>
           Runtime Semantics: ForDeclarationBindingInstantiation (
             _environment_: unknown,
-          )
+          ): ~unused~
         </h1>
         <dl class="header">
         </dl>
@@ -21952,6 +21951,7 @@
               1. Perform ! _environment_.CreateImmutableBinding(_name_, *true*).
             1. Else,
               1. Perform ! _environment_.CreateMutableBinding(_name_, *false*).
+          1. Return ~unused~.
         </emu-alg>
       </emu-clause>
 
@@ -21959,7 +21959,7 @@
         <h1>
           Runtime Semantics: ForInOfLoopEvaluation (
             _labelSet_: unknown,
-          )
+          ): a Completion Record normally containing an ECMAScript language value
         </h1>
         <dl class="header">
         </dl>
@@ -22044,7 +22044,7 @@
             1. If _exprValue_ is *undefined* or *null*, then
               1. Return Completion { [[Type]]: ~break~, [[Value]]: ~empty~, [[Target]]: ~empty~ }.
             1. Let _obj_ be ! ToObject(_exprValue_).
-            1. Let _iterator_ be ? EnumerateObjectProperties(_obj_).
+            1. Let _iterator_ be EnumerateObjectProperties(_obj_).
             1. Let _nextMethod_ be ! GetV(_iterator_, *"next"*).
             1. Return the Record { [[Iterator]]: _iterator_, [[NextMethod]]: _nextMethod_, [[Done]]: *false* }.
           1. Else,
@@ -22065,7 +22065,7 @@
             _lhsKind_: ~assignment~, ~varBinding~, or ~lexicalBinding~,
             _labelSet_: unknown,
             optional _iteratorKind_: ~sync~ or ~async~,
-          )
+          ): a Completion Record normally containing an ECMAScript language value
         </h1>
         <dl class="header">
         </dl>
@@ -22118,7 +22118,7 @@
               1. Set the running execution context's LexicalEnvironment to _oldEnv_.
               1. If _iteratorKind_ is ~async~, return ? AsyncIteratorClose(_iteratorRecord_, _status_).
               1. If _iterationKind_ is ~enumerate~, then
-                1. Return _status_.
+                1. Return Completion(_status_).
               1. Else,
                 1. Assert: _iterationKind_ is ~iterate~.
                 1. Return ? IteratorClose(_iteratorRecord_, _status_).
@@ -22154,7 +22154,7 @@
         <h1>
           EnumerateObjectProperties (
             _O_: an Object,
-          )
+          ): an Iterator
         </h1>
         <dl class="header">
         </dl>
@@ -22206,7 +22206,7 @@
           <h1>
             CreateForInIterator (
               _object_: an Object,
-            )
+            ): a For-In Iterator
           </h1>
           <dl class="header">
             <dt>description</dt>
@@ -22504,7 +22504,7 @@
       <h1>
         Runtime Semantics: CaseBlockEvaluation (
           _input_: unknown,
-        )
+        ): a Completion Record normally containing an ECMAScript language value
       </h1>
       <dl class="header">
       </dl>
@@ -22572,7 +22572,7 @@
         CaseClauseIsSelected (
           _C_: a |CaseClause| Parse Node,
           _input_: an ECMAScript language value,
-        )
+        ): a Completion Record normally containing a Boolean
       </h1>
       <dl class="header">
         <dt>description</dt>
@@ -22582,7 +22582,7 @@
         1. Assert: _C_ is an instance of the production <emu-grammar>CaseClause : `case` Expression `:` StatementList?</emu-grammar>.
         1. Let _exprRef_ be the result of evaluating the |Expression| of _C_.
         1. Let _clauseSelector_ be ? GetValue(_exprRef_).
-        1. Return IsStrictlyEqual(_input_, _clauseSelector_).
+        1. Return NormalCompletion(IsStrictlyEqual(_input_, _clauseSelector_)).
       </emu-alg>
       <emu-note>
         <p>This operation does not execute _C_'s |StatementList| (if any). The |CaseBlock| algorithm uses its return value to determine which |StatementList| to start executing.</p>
@@ -22657,7 +22657,7 @@
       <h1>
         Static Semantics: IsLabelledFunction (
           _stmt_: unknown,
-        )
+        ): a Boolean
       </h1>
       <dl class="header">
       </dl>
@@ -22683,7 +22683,7 @@
       <h1>
         Runtime Semantics: LabelledEvaluation (
           _labelSet_: unknown,
-        )
+        ): a Completion Record normally containing an ECMAScript language value
       </h1>
       <dl class="header">
       </dl>
@@ -22811,7 +22811,7 @@
       <h1>
         Runtime Semantics: CatchClauseEvaluation (
           _thrownValue_: unknown,
-        )
+        ): a Completion Record normally containing an ECMAScript language value
       </h1>
       <dl class="header">
       </dl>
@@ -22944,7 +22944,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-containsexpression" oldids="sec-destructuring-binding-patterns-static-semantics-containsexpression,sec-function-definitions-static-semantics-containsexpression,sec-arrow-function-definitions-static-semantics-containsexpression,sec-async-arrow-function-definitions-static-semantics-ContainsExpression" type="sdo">
-      <h1>Static Semantics: ContainsExpression</h1>
+      <h1>Static Semantics: ContainsExpression (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>
@@ -23051,7 +23051,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-issimpleparameterlist" oldids="sec-destructuring-binding-patterns-static-semantics-issimpleparameterlist,sec-function-definitions-static-semantics-issimpleparameterlist,sec-arrow-function-definitions-static-semantics-issimpleparameterlist,sec-async-arrow-function-definitions-static-semantics-IsSimpleParameterList" type="sdo">
-      <h1>Static Semantics: IsSimpleParameterList</h1>
+      <h1>Static Semantics: IsSimpleParameterList (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>BindingElement : BindingPattern</emu-grammar>
@@ -23116,7 +23116,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-hasinitializer" oldids="sec-destructuring-binding-patterns-static-semantics-hasinitializer,sec-function-definitions-static-semantics-hasinitializer" type="sdo">
-      <h1>Static Semantics: HasInitializer</h1>
+      <h1>Static Semantics: HasInitializer (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>BindingElement : BindingPattern</emu-grammar>
@@ -23143,7 +23143,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-expectedargumentcount" oldids="sec-function-definitions-static-semantics-expectedargumentcount,sec-arrow-function-definitions-static-semantics-expectedargumentcount,sec-method-definitions-static-semantics-expectedargumentcount,sec-async-arrow-function-definitions-static-semantics-ExpectedArgumentCount" type="sdo">
-      <h1>Static Semantics: ExpectedArgumentCount</h1>
+      <h1>Static Semantics: ExpectedArgumentCount (): an integer</h1>
       <dl class="header">
       </dl>
       <emu-grammar>
@@ -23273,7 +23273,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-functionbodycontainsusestrict" oldids="sec-function-definitions-static-semantics-containsusestrict" type="sdo">
-      <h1>Static Semantics: FunctionBodyContainsUseStrict</h1>
+      <h1>Static Semantics: FunctionBodyContainsUseStrict (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>FunctionBody : FunctionStatementList</emu-grammar>
@@ -23287,7 +23287,7 @@
         Runtime Semantics: EvaluateFunctionBody (
           _functionObject_: unknown,
           _argumentsList_: a List,
-        )
+        ): a Completion Record normally containing an ECMAScript language value
       </h1>
       <dl class="header">
       </dl>
@@ -23303,7 +23303,7 @@
         Runtime Semantics: InstantiateOrdinaryFunctionObject (
           _scope_: unknown,
           _privateScope_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -23333,7 +23333,7 @@
       <h1>
         Runtime Semantics: InstantiateOrdinaryFunctionExpression (
           optional _name_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -23455,7 +23455,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-concisebodycontainsusestrict" oldids="sec-arrow-function-definitions-static-semantics-containsusestrict" type="sdo">
-      <h1>Static Semantics: ConciseBodyContainsUseStrict</h1>
+      <h1>Static Semantics: ConciseBodyContainsUseStrict (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>ConciseBody : ExpressionBody</emu-grammar>
@@ -23473,7 +23473,7 @@
         Runtime Semantics: EvaluateConciseBody (
           _functionObject_: unknown,
           _argumentsList_: a List,
-        )
+        ): a Completion Record normally containing an ECMAScript language value
       </h1>
       <dl class="header">
       </dl>
@@ -23488,7 +23488,7 @@
       <h1>
         Runtime Semantics: InstantiateArrowFunctionExpression (
           optional _name_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -23511,7 +23511,7 @@
       <h1>Runtime Semantics: Evaluation</h1>
       <emu-grammar>ArrowFunction : ArrowParameters `=>` ConciseBody</emu-grammar>
       <emu-alg>
-        1. Return InstantiateArrowFunctionExpression of |ArrowFunction|.
+        1. Return NormalCompletion(InstantiateArrowFunctionExpression of |ArrowFunction|).
       </emu-alg>
       <emu-grammar>ExpressionBody : AssignmentExpression</emu-grammar>
       <emu-alg>
@@ -23564,7 +23564,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-hasdirectsuper" oldids="sec-method-definitions-static-semantics-hasdirectsuper,sec-generator-function-definitions-static-semantics-hasdirectsuper,sec-async-generator-function-definitions-static-semantics-hasdirectsuper,sec-async-function-definitions-static-semantics-HasDirectSuper" type="sdo">
-      <h1>Static Semantics: HasDirectSuper</h1>
+      <h1>Static Semantics: HasDirectSuper (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>MethodDefinition : ClassElementName `(` UniqueFormalParameters `)` `{` FunctionBody `}`</emu-grammar>
@@ -23601,7 +23601,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-specialmethod" type="sdo">
-      <h1>Static Semantics: SpecialMethod</h1>
+      <h1>Static Semantics: SpecialMethod (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>MethodDefinition : ClassElementName `(` UniqueFormalParameters `)` `{` FunctionBody `}`</emu-grammar>
@@ -23626,7 +23626,7 @@
         Runtime Semantics: DefineMethod (
           _object_: unknown,
           optional _functionPrototype_: unknown,
-        )
+        ): a Completion Record normally containing a Record with fields [[Key]] (a property key) and [[Closure]] (a function object)
       </h1>
       <dl class="header">
       </dl>
@@ -23652,7 +23652,7 @@
         Runtime Semantics: MethodDefinitionEvaluation (
           _object_: unknown,
           _enumerable_: unknown,
-        )
+        ): a Completion Record normally containing a Private Name or ~unused~
       </h1>
       <dl class="header">
       </dl>
@@ -23660,7 +23660,7 @@
       <emu-alg>
         1. Let _methodDef_ be ? DefineMethod of |MethodDefinition| with argument _object_.
         1. Perform SetFunctionName(_methodDef_.[[Closure]], _methodDef_.[[Key]]).
-        1. Return ? DefineMethodProperty(_object_, _methodDef_.[[Key]], _methodDef_.[[Closure]], _enumerable_).
+        1. Return Completion(DefineMethodProperty(_object_, _methodDef_.[[Key]], _methodDef_.[[Closure]], _enumerable_)).
       </emu-alg>
       <emu-grammar>MethodDefinition : `get` ClassElementName `(` `)` `{` FunctionBody `}`</emu-grammar>
       <emu-alg>
@@ -23674,11 +23674,11 @@
         1. Perform MakeMethod(_closure_, _object_).
         1. Perform SetFunctionName(_closure_, _propKey_, *"get"*).
         1. If _propKey_ is a Private Name, then
-          1. Return PrivateElement { [[Key]]: _propKey_, [[Kind]]: ~accessor~, [[Get]]: _closure_, [[Set]]: *undefined* }.
+          1. Return NormalCompletion(PrivateElement { [[Key]]: _propKey_, [[Kind]]: ~accessor~, [[Get]]: _closure_, [[Set]]: *undefined* }).
         1. Else,
           1. Let _desc_ be the PropertyDescriptor { [[Get]]: _closure_, [[Enumerable]]: _enumerable_, [[Configurable]]: *true* }.
           1. Perform ? DefinePropertyOrThrow(_object_, _propKey_, _desc_).
-          1. Return ~empty~.
+          1. Return NormalCompletion(~unused~).
       </emu-alg>
       <emu-grammar>MethodDefinition : `set` ClassElementName `(` PropertySetParameterList `)` `{` FunctionBody `}`</emu-grammar>
       <emu-alg>
@@ -23691,11 +23691,11 @@
         1. Perform MakeMethod(_closure_, _object_).
         1. Perform SetFunctionName(_closure_, _propKey_, *"set"*).
         1. If _propKey_ is a Private Name, then
-          1. Return PrivateElement { [[Key]]: _propKey_, [[Kind]]: ~accessor~, [[Get]]: *undefined*, [[Set]]: _closure_ }.
+          1. Return NormalCompletion(PrivateElement { [[Key]]: _propKey_, [[Kind]]: ~accessor~, [[Get]]: *undefined*, [[Set]]: _closure_ }).
         1. Else,
           1. Let _desc_ be the PropertyDescriptor { [[Set]]: _closure_, [[Enumerable]]: _enumerable_, [[Configurable]]: *true* }.
           1. Perform ? DefinePropertyOrThrow(_object_, _propKey_, _desc_).
-          1. Return ~empty~.
+          1. Return NormalCompletion(~unused~).
       </emu-alg>
       <emu-grammar>GeneratorMethod : `*` ClassElementName `(` UniqueFormalParameters `)` `{` GeneratorBody `}`</emu-grammar>
       <emu-alg>
@@ -23709,7 +23709,7 @@
         1. Perform SetFunctionName(_closure_, _propKey_).
         1. Let _prototype_ be OrdinaryObjectCreate(%GeneratorFunction.prototype.prototype%).
         1. Perform ! DefinePropertyOrThrow(_closure_, *"prototype"*, PropertyDescriptor { [[Value]]: _prototype_, [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *false* }).
-        1. Return ? DefineMethodProperty(_object_, _propKey_, _closure_, _enumerable_).
+        1. Return Completion(DefineMethodProperty(_object_, _propKey_, _closure_, _enumerable_)).
       </emu-alg>
       <emu-grammar>
         AsyncGeneratorMethod : `async` `*` ClassElementName `(` UniqueFormalParameters `)` `{` AsyncGeneratorBody `}`
@@ -23725,7 +23725,7 @@
         1. Perform SetFunctionName(_closure_, _propKey_).
         1. Let _prototype_ be OrdinaryObjectCreate(%AsyncGeneratorFunction.prototype.prototype%).
         1. Perform ! DefinePropertyOrThrow(_closure_, *"prototype"*, PropertyDescriptor { [[Value]]: _prototype_, [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *false* }).
-        1. Return ? DefineMethodProperty(_object_, _propKey_, _closure_, _enumerable_).
+        1. Return Completion(DefineMethodProperty(_object_, _propKey_, _closure_, _enumerable_)).
       </emu-alg>
       <emu-grammar>
         AsyncMethod : `async` ClassElementName `(` UniqueFormalParameters `)` `{` AsyncFunctionBody `}`
@@ -23739,7 +23739,7 @@
         1. Let _closure_ be ! OrdinaryFunctionCreate(%AsyncFunction.prototype%, _sourceText_, |UniqueFormalParameters|, |AsyncFunctionBody|, ~non-lexical-this~, _scope_, _privateScope_).
         1. Perform MakeMethod(_closure_, _object_).
         1. Perform SetFunctionName(_closure_, _propKey_).
-        1. Return ? DefineMethodProperty(_object_, _propKey_, _closure_, _enumerable_).
+        1. Return Completion(DefineMethodProperty(_object_, _propKey_, _closure_, _enumerable_)).
       </emu-alg>
     </emu-clause>
   </emu-clause>
@@ -23837,7 +23837,7 @@
         Runtime Semantics: EvaluateGeneratorBody (
           _functionObject_: unknown,
           _argumentsList_: a List,
-        )
+        ): a throw completion or a return completion
       </h1>
       <dl class="header">
       </dl>
@@ -23856,7 +23856,7 @@
         Runtime Semantics: InstantiateGeneratorFunctionObject (
           _scope_: unknown,
           _privateScope_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -23888,7 +23888,7 @@
       <h1>
         Runtime Semantics: InstantiateGeneratorFunctionExpression (
           optional _name_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -23931,7 +23931,7 @@
         GeneratorExpression : `function` `*` BindingIdentifier? `(` FormalParameters `)` `{` GeneratorBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return InstantiateGeneratorFunctionExpression of |GeneratorExpression|.
+        1. Return NormalCompletion(InstantiateGeneratorFunctionExpression of |GeneratorExpression|).
       </emu-alg>
       <emu-grammar>YieldExpression : `yield`</emu-grammar>
       <emu-alg>
@@ -24060,7 +24060,7 @@
         Runtime Semantics: EvaluateAsyncGeneratorBody (
           _functionObject_: unknown,
           _argumentsList_: a List,
-        )
+        ): a throw completion or a return completion
       </h1>
       <dl class="header">
       </dl>
@@ -24081,7 +24081,7 @@
         Runtime Semantics: InstantiateAsyncGeneratorFunctionObject (
           _scope_: unknown,
           _privateScope_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -24117,7 +24117,7 @@
       <h1>
         Runtime Semantics: InstantiateAsyncGeneratorFunctionExpression (
           optional _name_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -24164,7 +24164,7 @@
         AsyncGeneratorExpression : `async` `function` `*` BindingIdentifier? `(` FormalParameters `)` `{` AsyncGeneratorBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return InstantiateAsyncGeneratorFunctionExpression of |AsyncGeneratorExpression|.
+        1. Return NormalCompletion(InstantiateAsyncGeneratorFunctionExpression of |AsyncGeneratorExpression|).
       </emu-alg>
     </emu-clause>
   </emu-clause>
@@ -24226,7 +24226,7 @@
       <emu-grammar>ClassTail : ClassHeritage? `{` ClassBody `}`</emu-grammar>
       <ul>
         <li>
-          <p>It is a Syntax Error if |ClassHeritage| is not present and the following algorithm evaluates to *true*:</p>
+          <p>It is a Syntax Error if |ClassHeritage| is not present and the following algorithm returns *true*:</p>
           <emu-alg>
             1. Let _constructor_ be ConstructorMethod of |ClassBody|.
             1. If _constructor_ is ~empty~, return *false*.
@@ -24318,7 +24318,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-classelementkind" type="sdo">
-      <h1>Static Semantics: ClassElementKind</h1>
+      <h1>Static Semantics: ClassElementKind (): ~ConstructorMethod~, ~NonConstructorMethod~, or ~empty~</h1>
       <dl class="header">
       </dl>
       <emu-grammar>ClassElement : MethodDefinition</emu-grammar>
@@ -24346,7 +24346,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-constructormethod" type="sdo">
-      <h1>Static Semantics: ConstructorMethod</h1>
+      <h1>Static Semantics: ConstructorMethod (): a |ClassElement| Parse Node or ~empty~</h1>
       <dl class="header">
       </dl>
       <emu-grammar>ClassElementList : ClassElement</emu-grammar>
@@ -24367,7 +24367,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-isstatic" type="sdo">
-      <h1>Static Semantics: IsStatic</h1>
+      <h1>Static Semantics: IsStatic (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>ClassElement : MethodDefinition</emu-grammar>
@@ -24397,7 +24397,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-nonconstructorelements" oldids="sec-static-semantics-nonconstructormethoddefinitions" type="sdo">
-      <h1>Static Semantics: NonConstructorElements</h1>
+      <h1>Static Semantics: NonConstructorElements (): a List of |ClassElement| Parse Nodes</h1>
       <dl class="header">
       </dl>
       <emu-grammar>ClassElementList : ClassElement</emu-grammar>
@@ -24416,7 +24416,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-prototypepropertynamelist" type="sdo">
-      <h1>Static Semantics: PrototypePropertyNameList</h1>
+      <h1>Static Semantics: PrototypePropertyNameList (): a List of property keys</h1>
       <dl class="header">
       </dl>
       <emu-grammar>ClassElementList : ClassElement</emu-grammar>
@@ -24440,7 +24440,7 @@
       <h1>
         Static Semantics: AllPrivateIdentifiersValid (
           _names_: unknown,
-        )
+        ): a Boolean
       </h1>
       <dl class="header">
       </dl>
@@ -24494,7 +24494,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-privateboundidentifiers" type="sdo">
-      <h1>Static Semantics: PrivateBoundIdentifiers</h1>
+      <h1>Static Semantics: PrivateBoundIdentifiers (): a List of Strings</h1>
       <dl class="header">
       </dl>
       <emu-grammar>
@@ -24553,7 +24553,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-containsarguments" type="sdo">
-      <h1>Static Semantics: ContainsArguments</h1>
+      <h1>Static Semantics: ContainsArguments (): a Boolean</h1>
       <dl class="header">
       </dl>
 
@@ -24630,7 +24630,7 @@
       <h1>
         Runtime Semantics: ClassFieldDefinitionEvaluation (
           _homeObject_: unknown,
-        )
+        ): a Completion Record normally containing a ClassFieldDefinition Record
       </h1>
       <dl class="header">
       </dl>
@@ -24650,7 +24650,7 @@
           1. Set _initializer_.[[ClassFieldInitializerName]] to _name_.
         1. Else,
           1. Let _initializer_ be ~empty~.
-        1. Return the ClassFieldDefinition Record { [[Name]]: _name_, [[Initializer]]: _initializer_ }.
+        1. Return NormalCompletion(the ClassFieldDefinition Record { [[Name]]: _name_, [[Initializer]]: _initializer_ }).
       </emu-alg>
       <emu-note>
         The function created for _initializer_ is never directly accessible to ECMAScript code.
@@ -24661,7 +24661,7 @@
       <h1>
         Runtime Semantics: ClassStaticBlockDefinitionEvaluation (
           _homeObject_: unknown,
-        )
+        ): a ClassStaticBlockDefinition Record
       </h1>
       <dl class="header">
       </dl>
@@ -24682,7 +24682,7 @@
       <h1>
         Runtime Semantics: EvaluateClassStaticBlockBody (
           _functionObject_: unknown,
-        )
+        ): a Completion Record normally containing an ECMAScript language value
       </h1>
       <dl class="header">
       </dl>
@@ -24697,7 +24697,7 @@
       <h1>
         Runtime Semantics: ClassElementEvaluation (
           _object_: unknown,
-        )
+        ): a Completion Record normally containing a ClassFieldDefinition Record, a ClassStaticBlockDefinition Record, a Private Name, or ~unused~
       </h1>
       <dl class="header">
       </dl>
@@ -24708,7 +24708,7 @@
           `static` FieldDefinition `;`
       </emu-grammar>
       <emu-alg>
-        1. Return ClassFieldDefinitionEvaluation of |FieldDefinition| with argument _object_.
+        1. Return Completion(ClassFieldDefinitionEvaluation of |FieldDefinition| with argument _object_).
       </emu-alg>
 
       <emu-grammar>
@@ -24717,19 +24717,19 @@
           `static` MethodDefinition
       </emu-grammar>
       <emu-alg>
-        1. Return MethodDefinitionEvaluation of |MethodDefinition| with arguments _object_ and *false*.
+        1. Return Completion(MethodDefinitionEvaluation of |MethodDefinition| with arguments _object_ and *false*).
       </emu-alg>
 
       <emu-grammar>ClassElement : ClassStaticBlock</emu-grammar>
       <emu-alg>
-        1. Return ClassStaticBlockDefinitionEvaluation of |ClassStaticBlock| with argument _object_.
+        1. Return NormalCompletion(ClassStaticBlockDefinitionEvaluation of |ClassStaticBlock| with argument _object_).
       </emu-alg>
 
       <emu-grammar>
         ClassElement : `;`
       </emu-grammar>
       <emu-alg>
-        1. Return NormalCompletion(*undefined*).
+        1. Return NormalCompletion(~unused~).
       </emu-alg>
     </emu-clause>
 
@@ -24738,7 +24738,7 @@
         Runtime Semantics: ClassDefinitionEvaluation (
           _classBinding_: unknown,
           _className_: unknown,
-        )
+        ): a Completion Record normally containing a function object
       </h1>
       <dl class="header">
       </dl>
@@ -24798,7 +24798,7 @@
               1. NOTE: This branch behaves similarly to `constructor() {}`.
               1. Let _result_ be ? OrdinaryCreateFromConstructor(NewTarget, *"%Object.prototype%"*).
             1. Perform ? InitializeInstanceElements(_result_, _F_).
-            1. Return _result_.
+            1. Return NormalCompletion(_result_).
           1. Let _F_ be CreateBuiltinFunction(_defaultConstructor_, 0, _className_, &laquo; [[ConstructorKind]], [[SourceText]] &raquo;, the current Realm Record, _constructorParent_).
         1. Else,
           1. Let _constructorInfo_ be ! DefineMethod of _constructor_ with arguments _proto_ and _constructorParent_.
@@ -24858,14 +24858,14 @@
             1. Let _result_ be ? Call(_elementRecord_.[[BodyFunction]], _F_).
           1. If _result_ is an abrupt completion, then
             1. Set the running execution context's PrivateEnvironment to _outerPrivateEnvironment_.
-            1. Return _result_.
+            1. Return Completion(_result_).
         1. Set the running execution context's PrivateEnvironment to _outerPrivateEnvironment_.
-        1. Return _F_.
+        1. Return NormalCompletion(_F_).
       </emu-alg>
     </emu-clause>
 
     <emu-clause id="sec-runtime-semantics-bindingclassdeclarationevaluation" type="sdo">
-      <h1>Runtime Semantics: BindingClassDeclarationEvaluation</h1>
+      <h1>Runtime Semantics: BindingClassDeclarationEvaluation (): a Completion Record normally containing a function object</h1>
       <dl class="header">
       </dl>
       <emu-grammar>ClassDeclaration : `class` BindingIdentifier ClassTail</emu-grammar>
@@ -24875,13 +24875,13 @@
         1. Set _value_.[[SourceText]] to the source text matched by |ClassDeclaration|.
         1. Let _env_ be the running execution context's LexicalEnvironment.
         1. Perform ? InitializeBoundName(_className_, _value_, _env_).
-        1. Return _value_.
+        1. Return NormalCompletion(_value_).
       </emu-alg>
       <emu-grammar>ClassDeclaration : `class` ClassTail</emu-grammar>
       <emu-alg>
         1. Let _value_ be ? ClassDefinitionEvaluation of |ClassTail| with arguments *undefined* and *"default"*.
         1. Set _value_.[[SourceText]] to the source text matched by |ClassDeclaration|.
-        1. Return _value_.
+        1. Return NormalCompletion(_value_).
       </emu-alg>
       <emu-note>
         <p><emu-grammar>ClassDeclaration : `class` ClassTail</emu-grammar> only occurs as part of an |ExportDeclaration| and establishing its binding is handled as part of the evaluation action for that production. See <emu-xref href="#sec-exports-runtime-semantics-evaluation"></emu-xref>.</p>
@@ -25003,7 +25003,7 @@
         Runtime Semantics: InstantiateAsyncFunctionObject (
           _scope_: unknown,
           _privateScope_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -25032,7 +25032,7 @@
       <h1>
         Runtime Semantics: InstantiateAsyncFunctionExpression (
           optional _name_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -25074,7 +25074,7 @@
         Runtime Semantics: EvaluateAsyncFunctionBody (
           _functionObject_: unknown,
           _argumentsList_: a List,
-        )
+        ): a return completion
       </h1>
       <dl class="header">
       </dl>
@@ -25083,7 +25083,7 @@
       </emu-grammar>
       <emu-alg>
         1. Let _promiseCapability_ be ! NewPromiseCapability(%Promise%).
-        1. Let _declResult_ be FunctionDeclarationInstantiation(_functionObject_, _argumentsList_).
+        1. Let _declResult_ be Completion(FunctionDeclarationInstantiation(_functionObject_, _argumentsList_)).
         1. If _declResult_ is not an abrupt completion, then
           1. Perform ! AsyncFunctionStart(_promiseCapability_, |FunctionBody|).
         1. Else,
@@ -25099,7 +25099,7 @@
           `async` `function` BindingIdentifier? `(` FormalParameters `)` `{` AsyncFunctionBody `}`
       </emu-grammar>
       <emu-alg>
-        1. Return InstantiateAsyncFunctionExpression of |AsyncFunctionExpression|.
+        1. Return NormalCompletion(InstantiateAsyncFunctionExpression of |AsyncFunctionExpression|).
       </emu-alg>
       <emu-grammar>
         AwaitExpression : `await` UnaryExpression
@@ -25164,7 +25164,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-asyncconcisebodycontainsusestrict" oldids="sec-async-arrow-function-definitions-static-semantics-containsusestrict" type="sdo">
-      <h1>Static Semantics: AsyncConciseBodyContainsUseStrict</h1>
+      <h1>Static Semantics: AsyncConciseBodyContainsUseStrict (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>AsyncConciseBody : ExpressionBody</emu-grammar>
@@ -25182,7 +25182,7 @@
         Runtime Semantics: EvaluateAsyncConciseBody (
           _functionObject_: unknown,
           _argumentsList_: a List,
-        )
+        ): a return completion
       </h1>
       <dl class="header">
       </dl>
@@ -25191,7 +25191,7 @@
       </emu-grammar>
       <emu-alg>
         1. Let _promiseCapability_ be ! NewPromiseCapability(%Promise%).
-        1. Let _declResult_ be FunctionDeclarationInstantiation(_functionObject_, _argumentsList_).
+        1. Let _declResult_ be Completion(FunctionDeclarationInstantiation(_functionObject_, _argumentsList_)).
         1. If _declResult_ is not an abrupt completion, then
           1. Perform ! AsyncFunctionStart(_promiseCapability_, |ExpressionBody|).
         1. Else,
@@ -25204,7 +25204,7 @@
       <h1>
         Runtime Semantics: InstantiateAsyncArrowFunctionExpression (
           optional _name_: unknown,
-        )
+        ): a function object
       </h1>
       <dl class="header">
       </dl>
@@ -25245,7 +25245,7 @@
           CoverCallExpressionAndAsyncArrowHead `=>` AsyncConciseBody
       </emu-grammar>
       <emu-alg>
-        1. Return InstantiateAsyncArrowFunctionExpression of |AsyncArrowFunction|.
+        1. Return NormalCompletion(InstantiateAsyncArrowFunctionExpression of |AsyncArrowFunction|).
       </emu-alg>
     </emu-clause>
   </emu-clause>
@@ -25257,7 +25257,7 @@
       <h1>
         Static Semantics: IsInTailPosition (
           _call_: a Parse Node,
-        )
+        ): a Boolean
       </h1>
       <dl class="header">
       </dl>
@@ -25280,7 +25280,7 @@
       <h1>
         Static Semantics: HasCallInTailPosition (
           _call_: unknown,
-        )
+        ): a Boolean
       </h1>
       <dl class="header">
       </dl>
@@ -25617,12 +25617,13 @@
     </emu-clause>
 
     <emu-clause id="sec-preparefortailcall" type="abstract operation">
-      <h1>PrepareForTailCall ( )</h1>
+      <h1>PrepareForTailCall (): ~unused~</h1>
       <dl class="header">
       </dl>
       <emu-alg>
         1. Assert: The current execution context will not subsequently be used for the evaluation of any ECMAScript code or built-in functions. The invocation of Call subsequent to the invocation of this abstract operation will create and push a new execution context before performing any such evaluation.
         1. Discard all resources associated with the current execution context.
+        1. Return ~unused~.
       </emu-alg>
       <p>A tail position call must either release any transient internal resources associated with the currently executing function execution context before invoking the target function or reuse those resources in support of the target function.</p>
       <emu-note>
@@ -25681,7 +25682,7 @@
     </emu-clause>
 
     <emu-clause id="sec-static-semantics-isstrict" type="sdo">
-      <h1>Static Semantics: IsStrict</h1>
+      <h1>Static Semantics: IsStrict (): a Boolean</h1>
       <dl class="header">
       </dl>
       <emu-grammar>Script : ScriptBody?</emu-grammar>
@@ -25761,7 +25762,7 @@
           _sourceText_: ECMAScript source text,
           _realm_: unknown,
           _hostDefined_: unknown,
-        )
+        ): a Script Record
       </h1>
       <dl class="header">
         <dt>description</dt>
@@ -25782,7 +25783,7 @@
       <h1>
         ScriptEvaluation (
           _scriptRecord_: unknown,
-        )
+        ): a Completion Record normally containing an ECMAScript language value
       </h1>
       <dl class="header">
       </dl>
@@ -25816,7 +25817,7 @@
         GlobalDeclarationInstantiation (
           _script_: a |ScriptBody| Parse Node,
           _env_: a global Environment Record,
-        )
+        ): a Completion Record normally containing ~unused~
       </h1>
       <dl class="header">
         <dt>description</dt>
@@ -25880,7 +25881,7 @@
           1. Perform ? _env_.CreateGlobalFunctionBinding(_fn_, _fo_, *false*).
         1. For each String _vn_ of _declaredVarNames_, do
           1. Perform ? _env_.CreateGlobalVarBinding(_vn_, *false*).
-        1. Return NormalCompletion(~empty~).
+        1. Return NormalCompletion(~unused~).
       </emu-alg>
       <emu-note>
         <p>Early errors specified in <emu-xref href="#sec-scripts-static-semantics-early-errors"></emu-xref> prevent name conflicts between function/var declarations and let/const/class declarations as well as redeclaration of let/const/class bindings for declaration contained within a single |Script|. However, such conflicts and redeclarations that span more than one |Script| are detected as runtime errors during GlobalDeclarationInstantiation. If any such errors are detected, no bindings are instantiated for the script. However, if the global object is defined using Proxy exotic objects then the runtime tests for conflicting declarations may be unreliable resulting in an abrupt completion and some global declarations not being instantiated. If this occurs, the code for the |Script| is not evaluated.</p>
@@ -47364,7 +47365,7 @@ THH:mm:ss.sss
                   1. Let _benv_ be the running execution context's LexicalEnvironment.
                   1. Let _fobj_ be ! _benv_.GetBindingValue(_F_, *false*).
                   1. Perform ! _fenv_.SetMutableBinding(_F_, _fobj_, *false*).
-                  1. Return NormalCompletion(~empty~).
+                  1. Return NormalCompletion(~unused~).
         </emu-alg>
       </emu-annex>
 
@@ -47390,7 +47391,7 @@ THH:mm:ss.sss
                       1. Let _benv_ be the running execution context's LexicalEnvironment.
                       1. Let _fobj_ be ! _benv_.GetBindingValue(_F_, *false*).
                       1. Perform ? _genv_.SetMutableBinding(_F_, _fobj_, *false*).
-                      1. Return NormalCompletion(~empty~).
+                      1. Return NormalCompletion(~unused~).
         </emu-alg>
       </emu-annex>
 
@@ -47578,7 +47579,7 @@ THH:mm:ss.sss
         1. Let _bindingId_ be StringValue of |BindingIdentifier|.
         1. Let _lhs_ be ? ResolveBinding(_bindingId_).
         1. If IsAnonymousFunctionDefinition(|Initializer|) is *true*, then
-          1. Let _value_ be NamedEvaluation of |Initializer| with argument _bindingId_.
+          1. Let _value_ be ? NamedEvaluation of |Initializer| with argument _bindingId_.
         1. Else,
           1. Let _rhs_ be the result of evaluating |Initializer|.
           1. Let _value_ be ? GetValue(_rhs_).
